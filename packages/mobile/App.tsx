@@ -1,20 +1,21 @@
-import {StatusBar} from 'expo-status-bar';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './screens/home/Home';
 import WebView from './screens/webview/WebView';
 import Login from './screens/auth/Login';
 import Register from './screens/auth/Register';
 
 export type StackScreens = {
-  Home: undefined,
-  Login: undefined,
-  Register: undefined,
-  App: undefined,
-}
+  Home: undefined;
+  Login: undefined;
+  Register: undefined;
+  App: undefined;
+};
 
-export const Stack = createNativeStackNavigator<StackScreens>();
+const Stack = createNativeStackNavigator<StackScreens>();
 
 export default function App() {
   return (

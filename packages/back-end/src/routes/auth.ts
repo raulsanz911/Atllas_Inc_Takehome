@@ -111,14 +111,58 @@ const AuthRouter: IRoute = {
     });
 
     // Attempt to register
-    router.post('/register', (req, res) => {
-      // TODO
+  router.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+    
+    try {
+      // Check if the username already exists
+      const existingUser = await User.findOne({
+        where: sequelize.where(
+          sequelize.fn('lower', sequelize.col('username')),
+          sequelize.fn('lower', username),
+          ),
+      });
+    
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: 'Username is already taken.',
+        });
+      }
+    
+        // Create a new user
+      const newUser = await User.create({
+        username,
+        password,
+      });
+    
+      if (newUser) {
+        return res.json({
+          success: true,
+          message: 'User registered successfully.',
+        });
+        } else {
+          return passError('Failed to register user.', null, res);
+        }
+      } catch (error) {
+        return passError('Failed to register user.', error, res);
+      }
     });
 
     // Log out
     router.post('/logout', (req, res) => {
-      // TODO
+      // Clear the session
+      req.session = null;
+
+      // Clear the session token cookie
+      res.clearCookie('SESSION_TOKEN');
+
+      return res.json({
+        success: true,
+        message: 'Logged out successfully.',
+      });
     });
+
 
     return router;
   },
